@@ -43,6 +43,41 @@ public class Filesystem implements FilesystemInterface {
         this.fechaModificacion = new Date();
     }
 
+     /**
+     * Se usa para registrar a un usuario
+     * @param username - Nombre del usuario a registrar
+     */
+    public void register(String username){
+        if (users.contains(username)){
+            return;
+        }
+        users.add(username);
+    }
+
+     /**
+     * Cierra sesión de un usuario
+     */
+    public void logout(){
+        this.currentUser = null;
+    }
+
+    /**
+     * Monta la unidad requerida por la letra
+     * @param letter - Letra de la unidad que se quiere montar
+     */
+    public void switchDrive(String letter){
+        // Verifica que la letra exista y que el usuario esté logeado
+        if (this.currentUser == null || !DriveInterface.getAllLetters(unidades).contains(letter)){
+            return;
+        }
+        // Monta la unidad que se requiere
+        DriveInterface unidadRequerida = DriveInterface.getDriveInListDrive(unidades, letter);
+        this.currentDrive = unidadRequerida.getLetter();
+        directories = unidadRequerida.getDirectories();
+        this.pathActual = "/";
+    }
+
+
     @Override
     public String toString() {
         return "Filesystem{" +
