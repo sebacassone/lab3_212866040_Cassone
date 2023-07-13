@@ -77,6 +77,39 @@ public class Filesystem implements FilesystemInterface {
         this.pathActual = "/";
     }
 
+    /**
+     * Crea una carpeta en filesystem y lo inserta en el drive actual.
+     * @param folderName - Nombre de la carpeta a crear.
+     */
+    public void mkdir(String folderName){
+        // Verifica que haya una unidad montada o que haya un usuario logeado
+        if (currentDrive == null || currentUser == null){
+            return;
+        }
+        FolderInterface nuevaCarpeta = new Folder(folderName, currentUser, pathActual);
+        // Inserta la carpeta en la unidad
+        DriveInterface driveActual = DriveInterface.getDriveInListDrive(unidades, currentDrive);
+        driveActual.setFolderInDrive(nuevaCarpeta);
+        switchDrive(currentDrive);
+    }
+
+    /**
+     * Crea una carpeta en filesystem con parametros de seguridad, lo inserta en el drive actual
+     * @param folderName -  Nombre de la carpeta
+     * @param securityAtributes - Atributos de seguridad
+     */
+    public void mkdir(String folderName, List<String> securityAtributes){
+        // Verifica que haya una unidad montada o que haya un usuario logeado
+        if (currentDrive == null || currentUser == null){
+            return;
+        }
+        FolderInterface nuevaCarpeta = new Folder(folderName, currentUser, securityAtributes, pathActual);
+        // Inserta la carpeta en la unidad
+        DriveInterface driveActual = DriveInterface.getDriveInListDrive(unidades, currentDrive);
+        driveActual.setFolderInDrive(nuevaCarpeta);
+        switchDrive(currentDrive);
+    }
+
 
     @Override
     public String toString() {
