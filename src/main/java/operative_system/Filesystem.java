@@ -110,6 +110,27 @@ public class Filesystem implements FilesystemInterface {
         switchDrive(currentDrive);
     }
 
+    /**
+     * Cambia la ruta del filesystem
+     * @param ruta - ruta a ingresar
+     */
+    public void cd(String ruta){
+        // Verifica que esta ruta existe
+        if (FolderInterface.verifyFinalSlash(ruta) && !ruta.equals("/")){
+            ruta = ruta.substring(0, ruta.length() - 1);
+        }
+        if (ruta.contains(".") || ruta.contains("..")){
+            ruta = FolderInterface.deletePoints(pathActual, ruta);
+        }
+        if (!ruta.contains("/") || !(ruta.charAt(0) == '/')){
+            ruta = FolderInterface.convertNameToPath(ruta, pathActual);
+        }
+        if (!FolderInterface.getAllPathsOfFolders(directories).contains(ruta)){
+            return;
+        }
+        pathActual = ruta;
+    }
+
 
     @Override
     public String toString() {
