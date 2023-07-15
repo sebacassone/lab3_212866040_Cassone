@@ -131,6 +131,33 @@ public class Filesystem implements FilesystemInterface {
         pathActual = ruta;
     }
 
+    public void addFile(FileInterface nuevoArchivo){
+        // Verifica que haya una unidad montada o que haya un usuario logeado
+        if (currentDrive == null || currentUser == null){
+            return;
+        }
+        // Se inicializa path para buscar la carpeta
+        String path;
+        String nameFolder;
+        // Inserta el archivo en la carpeta actual
+        List<FolderInterface> directorioActual = DriveInterface.getDriveInListDrive(unidades, currentDrive).getDirectories();
+        if (pathActual == "/"){
+            path = pathActual;
+            nameFolder = pathActual;
+        } else {
+            // Obtener la posición del último "/"
+            int indiceUltimoSlash = pathActual.lastIndexOf("/");
+            // Obtener la subcadena que contiene el texto antes del último "/"
+            path = pathActual.substring(0, indiceUltimoSlash + 1);
+            nameFolder = pathActual.substring(indiceUltimoSlash + 1, pathActual.length());
+        }
+        FolderInterface folderActual = FolderInterface.getFolderInListFolder(directories, path, nameFolder);
+        // Se reemplaza si ya existe en la carpeta un archivo con el mismo nombre
+        if (folderActual.checkDuplicateFilesInAFile(nuevoArchivo.getNombre())){
+            folderActual.deleteFileInFolder(nuevoArchivo.getNombre());
+        }
+        folderActual.getArchivos().add(nuevoArchivo);
+    }
 
     @Override
     public String toString() {
