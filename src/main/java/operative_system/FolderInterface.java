@@ -7,11 +7,12 @@ public interface FolderInterface {
     String getName();
     String getPathFolder();
     List<FileInterface> getArchivos();
-    Boolean checkDuplicateFilesInAFile(String Name);
-    void deleteFileInFolder(String Name);
+    Boolean checkDuplicateFilesInAFile(String Name, String Type);
+    void deleteFileInFolder(String Name, String Type);
     void deleteAllFilesInFolder();
     List<String> getAllNamesFiles();
     void deleteFilesinListFile(List<String> nombres);
+    List<FileInterface> getFilesInListFiles(List<String> nombres);
 
     // Métodos estáticos pertenecientes a la interfaz que se utilizan para cd
 
@@ -134,5 +135,17 @@ public interface FolderInterface {
             }
         }
         return resultados;
+    }
+
+    static Boolean getDuplicityFolders(List<FolderInterface> carpetas, String folderName, String pathActual){
+        String nombre;
+        Boolean isDuplicado = false;
+        for (FolderInterface carpeta: carpetas){
+            nombre = pathActual + carpeta.getName();
+            if(nombre.equals(pathActual + folderName)){
+                isDuplicado = true;
+            }
+        }
+        return isDuplicado;
     }
 }

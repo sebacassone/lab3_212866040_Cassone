@@ -103,6 +103,9 @@ public class Filesystem implements FilesystemInterface {
         if (currentDrive == null || currentUser == null){
             return;
         }
+        if (FolderInterface.getDuplicityFolders(directories, folderName, pathActual)){
+            return;
+        }
         FolderInterface nuevaCarpeta = new Folder(folderName, currentUser, securityAtributes, pathActual);
         // Inserta la carpeta en la unidad
         DriveInterface driveActual = DriveInterface.getDriveInListDrive(unidades, currentDrive);
@@ -123,7 +126,10 @@ public class Filesystem implements FilesystemInterface {
             ruta = FolderInterface.deletePoints(pathActual, ruta);
         }
         if (!ruta.contains("/") || !(ruta.charAt(0) == '/')){
-            ruta = FolderInterface.convertNameToPath(ruta, pathActual);
+            if (pathActual.equals("/"))
+                ruta = pathActual + ruta;
+            else
+                ruta = FolderInterface.convertNameToPath(ruta, pathActual);
         }
         if (!FolderInterface.getAllPathsOfFolders(directories).contains(ruta)){
             return;
@@ -131,7 +137,11 @@ public class Filesystem implements FilesystemInterface {
         pathActual = ruta;
     }
 
-    private FolderInterface getFolderInListFolderComplete(){
+    /**
+     * Obtiene la carpeta actual que corresponde de donde está actualmenete el path
+     * @return - Carpeta actual
+     */
+    private FolderInterface getFolderInListFolderOfActuallyPath(){
         // Se inicializa path para buscar la carpeta
         String path;
         String nameFolder;
@@ -149,26 +159,34 @@ public class Filesystem implements FilesystemInterface {
         return folderActual;
     }
 
+    /**
+     * Añadae un archivo nuevo al path actual
+     * @param nuevoArchivo - Nuevo archivo
+     */
     public void addFile(FileInterface nuevoArchivo){
         // Verifica que haya una unidad montada o que haya un usuario logeado
         if (currentDrive == null || currentUser == null){
             return;
         }
-        FolderInterface folderActual = this.getFolderInListFolderComplete();
+        FolderInterface folderActual = this.getFolderInListFolderOfActuallyPath();
         // Inserta el archivo en la carpeta actual
         // Se reemplaza si ya existe en la carpeta un archivo con el mismo nombre
-        if (folderActual.checkDuplicateFilesInAFile(nuevoArchivo.getNombre())){
-            folderActual.deleteFileInFolder(nuevoArchivo.getNombre());
+        if (folderActual.checkDuplicateFilesInAFile(nuevoArchivo.getNombre(), nuevoArchivo.getTipo())){
+            folderActual.deleteFileInFolder(nuevoArchivo.getNombre(), nuevoArchivo.getTipo());
         }
         folderActual.getArchivos().add(nuevoArchivo);
     }
 
+    /**
+     * Elimina un archivo, un conjunto de archivos según un patrón o una carpeta.
+     * @param fileNamePattern - Lo que se va a eliminar
+     */
     public void del(String fileNamePattern){
         // Verifica que haya una unidad montada o que haya un usuario logeado
         if (currentDrive == null || currentUser == null){
             return;
         }
-        FolderInterface carpetaActual = this.getFolderInListFolderComplete();
+        FolderInterface carpetaActual = this.getFolderInListFolderOfActuallyPath();
         if (fileNamePattern.equals("*.*")){
             carpetaActual.deleteAllFilesInFolder();
         }
@@ -182,13 +200,69 @@ public class Filesystem implements FilesystemInterface {
         }
         else if (fileNamePattern.contains(".")){
             String nombre = fileNamePattern.substring(0, fileNamePattern.indexOf("."));
-            if (carpetaActual.checkDuplicateFilesInAFile(nombre))
-                carpetaActual.deleteFileInFolder(nombre);
+            String tipo = fileNamePattern.substring(fileNamePattern.indexOf("."), fileNamePattern.length());
+            if (carpetaActual.checkDuplicateFilesInAFile(nombre, tipo))
+                carpetaActual.deleteFileInFolder(nombre, tipo);
         }
         else {
-            directories.remove(carpetaActual);
+            directories.remove(FolderInterface.getFolderInListFolder(directories, pathActual, fileNamePattern));
         }
     }
+
+    public void copy(String source, String targetPath){
+        // Verifica que haya una unidad montada o que haya un usuario logeado
+        if (currentDrive == null || currentUser == null){
+            return;
+        }
+        FolderInterface carpetaActual = this.getFolderInListFolderOfActuallyPath();
+        List<FileInterface> archivosACopiar = null;
+        FolderInterface carpetaACopiar = null;
+        if (source.equals("*.*")){
+            archivosACopiar = carpetaActual.getArchivos();
+        } else if (source.contains("*")){
+            List<String> nombres = carpetaActual.getAllNamesFiles();
+            if (source.indexOf("*") > 0)
+                nombres = FolderInterface.getAllNamesStartWithAsterik(nombres,source);
+            if (source.indexOf("*") < source.length() - 1)
+                nombres = FolderInterface.getAllNamesEndWithAsterik(nombres,source);
+            archivosACopiar = carpetaActual.getFilesInListFiles(nombres);
+        } else if (source.contains(".")){
+            List<String> nombres = new ArrayList<>();
+            String nombre = source.substring(0, source.indexOf("."));
+            String tipo = source.substring(source.indexOf("."), source.length());
+            nombres.add(nombre);
+            if (carpetaActual.checkDuplicateFilesInAFile(nombre, tipo))
+                archivosACopiar = carpetaActual.getFilesInListFiles(nombres);
+        } else {
+            carpetaACopiar = FolderInterface.getFolderInListFolder(directories, pathActual, source);
+        }
+        String path = targetPath.substring(targetPath.indexOf(":") + 1, targetPath.length());
+        String driveDestiny = targetPath.substring(0, targetPath.indexOf(":"));
+        this.switchDrive(driveDestiny);
+        this.cd(path);
+        if (archivosACopiar != null){
+            for(FileInterface archivo: archivosACopiar){
+                addFile(archivo);
+            }
+        } else if (carpetaACopiar != null) {
+            mkdir(carpetaACopiar.getName());
+            cd(carpetaACopiar.getName());
+            for(FileInterface archivo: carpetaACopiar.getArchivos()){
+                addFile(archivo);
+            }
+        }
+    }
+
+    public void move(String source, String targetPath){
+        String pathAntiguo = pathActual;
+        String unidadAntigua = currentDrive;
+        copy(source,targetPath);
+        switchDrive(unidadAntigua);
+        switchDrive(pathAntiguo);
+        del(source);
+    }
+
+    public void ren(String currentName, String )
 
     @Override
     public String toString() {

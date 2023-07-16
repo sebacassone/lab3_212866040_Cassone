@@ -90,10 +90,10 @@ public class Folder implements FolderInterface{
     /**
      * Checkea si en una carpeta
      * @param Name - Nombre del archivo
-     * @param folder - Carpeta
+     * @param Type - Tipo del archivo
      * @return - Valor de verdad si existe un archivo con ese nombre
      */
-    public Boolean checkDuplicateFilesInAFile(String Name){
+    public Boolean checkDuplicateFilesInAFile(String Name, String Type){
         Boolean isDuplicate = false;
         for (FileInterface archivo: Archivos){
             if (archivo.getNombre().equals(Name)){
@@ -107,10 +107,10 @@ public class Folder implements FolderInterface{
      * Elimina un archivo en una carpeta
      * @param Name - Nombre del archivo
      */
-    public void deleteFileInFolder(String Name){
+    public void deleteFileInFolder(String Name, String Type){
         FileInterface archivoEncontrado = null;
         for (FileInterface archivo: Archivos){
-            if (archivo.getNombre().equals(Name)){
+            if (archivo.getNombre().equals(Name) && archivo.getTipo().equals(Type)){
                 archivoEncontrado = archivo;
             }
         }
@@ -133,9 +133,22 @@ public class Folder implements FolderInterface{
     }
 
     public void deleteFilesinListFile(List<String> nombres){
+        String tipo;
         for (String nombre: nombres){
             nombre = nombre.substring(0, nombre.indexOf("."));
-            this.deleteFileInFolder(nombre);
+            tipo = nombre.substring(nombre.indexOf("."), nombre.length());
+            this.deleteFileInFolder(nombre, tipo);
         }
     }
+
+    public List<FileInterface> getFilesInListFiles(List<String> nombres){
+        List<FileInterface> carpetasEncontradas = new ArrayList<>();
+        for (FileInterface archivo: Archivos){
+            if (nombres.contains(archivo.getNombre() + archivo.getTipo())){
+                carpetasEncontradas.add(archivo);
+            }
+        }
+        return carpetasEncontradas;
+    }
+
 }

@@ -29,13 +29,25 @@ public class Main {
         s1.cd("../../../../Pepino1");
         FileInterface nuevoArchivo = new FileDocument("Pep1", ".docx","Peo");
         FileInterface nuevoArchivo2 = new FileDocument("Pep1", ".docx","Pichi");
+        FileInterface nuevoArchivo3 = new FileDocument("Pep2", ".py","Pichi");
+        FileInterface nuevoArchivo4 = new FileDocument("Pep3", ".jar","Pichi");
+        FileInterface nuevoArchivo5 = new FileDocument("8", ".docx","Pichi");
+        FileInterface nuevoArchivo6 = new FileDocument("Pep1", ".java","Pichi");
         System.out.println(nuevoArchivo);
         s1.addFile(nuevoArchivo);
         s1.addFile(nuevoArchivo2);
+        s1.addFile(nuevoArchivo3);
+        s1.addFile(nuevoArchivo4);
+        s1.addFile(nuevoArchivo5);
+        s1.addFile(nuevoArchivo6);
         s1.cd("/");
         s1.addFile(nuevoArchivo);
         s1.addFile(nuevoArchivo2);
-        s1.del("*.docx");
+        s1.cd("/");
+        s1.copy("Pepino1", "B:/");
+        s1.cd("/");
+        s1.move("Pepino1", "A:/Pepino1");
+        s1.switchDrive("A");
 
         System.out.println(s1.getDirectories());
     }
