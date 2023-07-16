@@ -10,7 +10,7 @@ public class FileDocument extends File{
      * @param contenido - Contenido del documento
      */
     public FileDocument(String nombre, String tipo, String contenido) {
-        super(nombre, ".txt", contenido);
+        super(nombre, tipo, contenido);
     }
 
     /**

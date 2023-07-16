@@ -57,4 +57,8 @@ public abstract class File implements FileInterface {
     public String getNombre() {
         return nombre;
     }
+
+    public String getTipo() {
+        return tipo;
+    }
 }

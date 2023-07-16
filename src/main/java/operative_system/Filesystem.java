@@ -131,16 +131,10 @@ public class Filesystem implements FilesystemInterface {
         pathActual = ruta;
     }
 
-    public void addFile(FileInterface nuevoArchivo){
-        // Verifica que haya una unidad montada o que haya un usuario logeado
-        if (currentDrive == null || currentUser == null){
-            return;
-        }
+    private FolderInterface getFolderInListFolderComplete(){
         // Se inicializa path para buscar la carpeta
         String path;
         String nameFolder;
-        // Inserta el archivo en la carpeta actual
-        List<FolderInterface> directorioActual = DriveInterface.getDriveInListDrive(unidades, currentDrive).getDirectories();
         if (pathActual == "/"){
             path = pathActual;
             nameFolder = pathActual;
@@ -152,11 +146,48 @@ public class Filesystem implements FilesystemInterface {
             nameFolder = pathActual.substring(indiceUltimoSlash + 1, pathActual.length());
         }
         FolderInterface folderActual = FolderInterface.getFolderInListFolder(directories, path, nameFolder);
+        return folderActual;
+    }
+
+    public void addFile(FileInterface nuevoArchivo){
+        // Verifica que haya una unidad montada o que haya un usuario logeado
+        if (currentDrive == null || currentUser == null){
+            return;
+        }
+        FolderInterface folderActual = this.getFolderInListFolderComplete();
+        // Inserta el archivo en la carpeta actual
         // Se reemplaza si ya existe en la carpeta un archivo con el mismo nombre
         if (folderActual.checkDuplicateFilesInAFile(nuevoArchivo.getNombre())){
             folderActual.deleteFileInFolder(nuevoArchivo.getNombre());
         }
         folderActual.getArchivos().add(nuevoArchivo);
+    }
+
+    public void del(String fileNamePattern){
+        // Verifica que haya una unidad montada o que haya un usuario logeado
+        if (currentDrive == null || currentUser == null){
+            return;
+        }
+        FolderInterface carpetaActual = this.getFolderInListFolderComplete();
+        if (fileNamePattern.equals("*.*")){
+            carpetaActual.deleteAllFilesInFolder();
+        }
+        else if (fileNamePattern.contains("*")){
+            List<String> nombres = carpetaActual.getAllNamesFiles();
+            if (fileNamePattern.indexOf("*") > 0)
+                nombres = FolderInterface.getAllNamesStartWithAsterik(nombres,fileNamePattern);
+            if (fileNamePattern.indexOf("*") < fileNamePattern.length() - 1)
+                nombres = FolderInterface.getAllNamesEndWithAsterik(nombres,fileNamePattern);
+            carpetaActual.deleteFilesinListFile(nombres);
+        }
+        else if (fileNamePattern.contains(".")){
+            String nombre = fileNamePattern.substring(0, fileNamePattern.indexOf("."));
+            if (carpetaActual.checkDuplicateFilesInAFile(nombre))
+                carpetaActual.deleteFileInFolder(nombre);
+        }
+        else {
+            directories.remove(carpetaActual);
+        }
     }
 
     @Override
@@ -174,4 +205,7 @@ public class Filesystem implements FilesystemInterface {
                 '}';
     }
 
+    public List<FolderInterface> getDirectories() {
+        return directories;
+    }
 }

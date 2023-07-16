@@ -35,7 +35,8 @@ public class Main {
         s1.cd("/");
         s1.addFile(nuevoArchivo);
         s1.addFile(nuevoArchivo2);
+        s1.del("*.docx");
 
-        System.out.println(s1);
+        System.out.println(s1.getDirectories());
     }
 }

@@ -116,4 +116,26 @@ public class Folder implements FolderInterface{
         }
         Archivos.remove(archivoEncontrado);
     }
+
+    /**
+     * Elimina todos archivos de un directorio
+     */
+    public void deleteAllFilesInFolder(){
+        Archivos.clear();
+    }
+
+    public List<String> getAllNamesFiles(){
+        List<String> nombres = new ArrayList<>();
+        for (FileInterface archivo: Archivos){
+            nombres.add(archivo.getNombre() + archivo.getTipo());
+        }
+        return nombres;
+    }
+
+    public void deleteFilesinListFile(List<String> nombres){
+        for (String nombre: nombres){
+            nombre = nombre.substring(0, nombre.indexOf("."));
+            this.deleteFileInFolder(nombre);
+        }
+    }
 }

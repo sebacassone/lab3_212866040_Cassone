@@ -9,6 +9,9 @@ public interface FolderInterface {
     List<FileInterface> getArchivos();
     Boolean checkDuplicateFilesInAFile(String Name);
     void deleteFileInFolder(String Name);
+    void deleteAllFilesInFolder();
+    List<String> getAllNamesFiles();
+    void deleteFilesinListFile(List<String> nombres);
 
     // Métodos estáticos pertenecientes a la interfaz que se utilizan para cd
 
@@ -104,5 +107,32 @@ public interface FolderInterface {
             }
         }
         return carpetaEncontrada;
+    }
+
+    // Se utiliza para del
+    static List<String> getAllNamesStartWithAsterik(List<String> nombres, String fileNamePattern){
+        List<String> resultados = new ArrayList<>();
+        int asteriscoIndex = fileNamePattern.indexOf("*");
+        String substring = fileNamePattern.substring(0, asteriscoIndex);
+
+        for (String elemento : nombres) {
+            if (elemento.startsWith(substring)) {
+                resultados.add(elemento);
+            }
+        }
+        return resultados;
+    }
+
+    static List<String> getAllNamesEndWithAsterik(List<String> nombres, String fileNamePattern){
+        List<String> resultados = new ArrayList<>();
+        int asteriscoIndex = fileNamePattern.indexOf("*");
+        String substring = fileNamePattern.substring(asteriscoIndex + 1, fileNamePattern.length());
+
+        for (String elemento : nombres) {
+            if (elemento.endsWith(substring)) {
+                resultados.add(elemento);
+            }
+        }
+        return resultados;
     }
 }
