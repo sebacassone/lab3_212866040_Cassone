@@ -1,0 +1,23 @@
+Requerimientos Funcionales:
+1. Clases y estructuras que forman el programa: 1 Implementación completa sin problemas
+2. Menú interactivo por terminal: 1 Implementación completa sin problemas
+RF3 - TDA system - constructor: Implementación completa sin problemas.
+RF4 - TDA system - addDrive: Implementación completa sin problemas.
+RF5 - TDA system - register: Implementación completa sin problemas.
+RF6 - TDA system - login: Implementación completa sin problemas.
+RF7 - TDA system - logout: Implementación completa sin problemas.
+RF8 - TDA system - switchDrive: Implementación completa sin problemas.
+RF9 - TDA system - mkdir: Implementación completa sin problemas.
+RF10 - TDA system - cd (change directory): Implementación completa sin problemas.
+RF11 - TDA system - addFile: Implementación completa sin problemas.
+RF12 - TDA system - del: Implementación completa sin problemas.
+RF13 - TDA system - copy: Implementación completa sin problemas.
+RF14 - TDA system - move: Implementación completa sin problemas.
+RF15 - TDA system - ren (rename): No implementado.
+RF16 - TDA system - dir (directory): No implementado.
+RF17 - TDA system - format: No implementado.
+RF18 - TDA system - encrypt: No implementado.
+RF19 - TDA system - decrypt: No implementado.
+RF20 - TDA system - grep: No implementado.
+RF21 - TDA system - viewTrash: No implementado.
+RF22 - TDA system - restore: No implementado.
