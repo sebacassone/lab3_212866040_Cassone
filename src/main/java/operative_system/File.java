@@ -61,4 +61,8 @@ public abstract class File implements FileInterface {
     public String getTipo() {
         return tipo;
     }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 }

@@ -154,6 +154,8 @@ public class Filesystem implements FilesystemInterface {
             // Obtener la subcadena que contiene el texto antes del último "/"
             path = pathActual.substring(0, indiceUltimoSlash + 1);
             nameFolder = pathActual.substring(indiceUltimoSlash + 1, pathActual.length());
+            if (path.endsWith("/") && !path.equals("/"))
+                path = path.substring(0, path.length() - 1);
         }
         FolderInterface folderActual = FolderInterface.getFolderInListFolder(directories, path, nameFolder);
         return folderActual;
@@ -246,14 +248,20 @@ public class Filesystem implements FilesystemInterface {
             }
         } else if (carpetaACopiar != null) {
             mkdir(carpetaACopiar.getName());
+            this.switchDrive(driveDestiny);
+            this.cd(path);
             cd(carpetaACopiar.getName());
-            for(FileInterface archivo: carpetaACopiar.getArchivos()){
+            List<FileInterface> archivos = carpetaACopiar.getArchivos();
+            for(FileInterface archivo: archivos){
                 addFile(archivo);
             }
         }
     }
 
     public void move(String source, String targetPath){
+        if (currentDrive == null || currentUser == null){
+            return;
+        }
         String pathAntiguo = pathActual;
         String unidadAntigua = currentDrive;
         copy(source,targetPath);
@@ -261,8 +269,6 @@ public class Filesystem implements FilesystemInterface {
         switchDrive(pathAntiguo);
         del(source);
     }
-
-    public void ren(String currentName, String )
 
     @Override
     public String toString() {

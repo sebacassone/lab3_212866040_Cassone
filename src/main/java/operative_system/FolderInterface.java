@@ -13,6 +13,7 @@ public interface FolderInterface {
     List<String> getAllNamesFiles();
     void deleteFilesinListFile(List<String> nombres);
     List<FileInterface> getFilesInListFiles(List<String> nombres);
+    void setName(String name);
 
     // Métodos estáticos pertenecientes a la interfaz que se utilizan para cd
 

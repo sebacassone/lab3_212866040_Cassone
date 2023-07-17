@@ -151,4 +151,7 @@ public class Folder implements FolderInterface{
         return carpetasEncontradas;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 }
