@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Folder implements FolderInterface{
-    private List<FileInterface> Archivos;
+public class Folder_21286604_CassoneGonzalez implements FolderInterface_21286604_CassoneGonzalez {
+    private List<FileInterface_21286604_CassoneGonzalez> Archivos;
     private String name;
     private String userCreator;
     private Date fechaCreacion;
@@ -20,7 +20,7 @@ public class Folder implements FolderInterface{
      * @param atributosSeguridad - Atributos de seguridad de la carpeta
      * @param pathFolder - Path de la carpeta
      */
-    public Folder(String name, String userCreator, List<String> atributosSeguridad, String pathFolder) {
+    public Folder_21286604_CassoneGonzalez(String name, String userCreator, List<String> atributosSeguridad, String pathFolder) {
         Archivos = new ArrayList<>();
         this.name = name;
         this.userCreator = userCreator;
@@ -36,7 +36,7 @@ public class Folder implements FolderInterface{
      * @param userCreator - Creador de la carpeta
      * @param pathFolder - En donde se crea la carpeta
      */
-    public Folder(String name, String userCreator, String pathFolder) {
+    public Folder_21286604_CassoneGonzalez(String name, String userCreator, String pathFolder) {
         Archivos = new ArrayList<>();
         this.name = name;
         this.userCreator = userCreator;
@@ -63,12 +63,12 @@ public class Folder implements FolderInterface{
     }
 
     /**
-     * ToString de Folder
+     * ToString de Folder_21286604_CassoneGonzalez
      * @return - String con los atributos
      */
     @Override
     public String toString() {
-        return "Folder{" +
+        return "Folder" +
                 "Archivos=" + Archivos +
                 ", name='" + name + '\'' +
                 ", userCreator='" + userCreator + '\'' +
@@ -83,7 +83,7 @@ public class Folder implements FolderInterface{
      * Obtiene los archivos de una carpeta
      * @return - Archivos de una carpeta
      */
-    public List<FileInterface> getArchivos() {
+    public List<FileInterface_21286604_CassoneGonzalez> getArchivos() {
         return Archivos;
     }
 
@@ -95,7 +95,7 @@ public class Folder implements FolderInterface{
      */
     public Boolean checkDuplicateFilesInAFile(String Name, String Type){
         Boolean isDuplicate = false;
-        for (FileInterface archivo: Archivos){
+        for (FileInterface_21286604_CassoneGonzalez archivo: Archivos){
             if (archivo.getNombre().equals(Name)){
                 isDuplicate = true;
             }
@@ -108,8 +108,8 @@ public class Folder implements FolderInterface{
      * @param Name - Nombre del archivo
      */
     public void deleteFileInFolder(String Name, String Type){
-        FileInterface archivoEncontrado = null;
-        for (FileInterface archivo: Archivos){
+        FileInterface_21286604_CassoneGonzalez archivoEncontrado = null;
+        for (FileInterface_21286604_CassoneGonzalez archivo: Archivos){
             if (archivo.getNombre().equals(Name) && archivo.getTipo().equals(Type)){
                 archivoEncontrado = archivo;
             }
@@ -126,7 +126,7 @@ public class Folder implements FolderInterface{
 
     public List<String> getAllNamesFiles(){
         List<String> nombres = new ArrayList<>();
-        for (FileInterface archivo: Archivos){
+        for (FileInterface_21286604_CassoneGonzalez archivo: Archivos){
             nombres.add(archivo.getNombre() + archivo.getTipo());
         }
         return nombres;
@@ -141,9 +141,9 @@ public class Folder implements FolderInterface{
         }
     }
 
-    public List<FileInterface> getFilesInListFiles(List<String> nombres){
-        List<FileInterface> carpetasEncontradas = new ArrayList<>();
-        for (FileInterface archivo: Archivos){
+    public List<FileInterface_21286604_CassoneGonzalez> getFilesInListFiles(List<String> nombres){
+        List<FileInterface_21286604_CassoneGonzalez> carpetasEncontradas = new ArrayList<>();
+        for (FileInterface_21286604_CassoneGonzalez archivo: Archivos){
             if (nombres.contains(archivo.getNombre() + archivo.getTipo())){
                 carpetasEncontradas.add(archivo);
             }

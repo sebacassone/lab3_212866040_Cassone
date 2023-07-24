@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Filesystem implements FilesystemInterface {
+public class Filesystem_21286604_CassoneGonzalez implements FilesystemInterface_21286604_CassoneGonzalez {
     private final String name;
     private List<String> users;
-    private List<DriveInterface> unidades;
+    private List<DriveInterface_21286604_CassoneGonzalez> unidades;
     private String currentUser;
     private String currentDrive;
     private String pathActual;
-    private List<FolderInterface> directories;
+    private List<FolderInterface_21286604_CassoneGonzalez> directories;
     private final Date fechaCreacion;
     private Date fechaModificacion;
 
@@ -19,7 +19,7 @@ public class Filesystem implements FilesystemInterface {
      *
      * @param name - Nombre del filesystem
      */
-    public Filesystem(String name){
+    public Filesystem_21286604_CassoneGonzalez(String name){
         this.name = name;
         this.users = new ArrayList<>();
         unidades = new ArrayList<>();
@@ -35,10 +35,10 @@ public class Filesystem implements FilesystemInterface {
      * @param capacity - Capacidad del drive a crear
      */
     public void addDrive(String letter, String name, int capacity){
-        if (DriveInterface.getAllLetters(unidades).contains(letter)){
+        if (DriveInterface_21286604_CassoneGonzalez.getAllLetters(unidades).contains(letter)){
             return;
         }
-        DriveInterface nuevoDrive = new Drive(letter, name, capacity);
+        DriveInterface_21286604_CassoneGonzalez nuevoDrive = new Drive_21286604_CassoneGonzalez(letter, name, capacity);
         unidades.add(nuevoDrive);
         this.fechaModificacion = new Date();
     }
@@ -54,6 +54,17 @@ public class Filesystem implements FilesystemInterface {
         users.add(username);
     }
 
+    /**
+     * Se usa para logear a un usuario
+     * @param username - Nombre del usuario que quiere iniciar sesión.
+     */
+    public void login(String username){
+        if (!users.contains(username) || this.currentUser != null){
+            return;
+        }
+        this.currentUser = username;
+    }
+
      /**
      * Cierra sesión de un usuario
      */
@@ -67,11 +78,11 @@ public class Filesystem implements FilesystemInterface {
      */
     public void switchDrive(String letter){
         // Verifica que la letra exista y que el usuario esté logeado
-        if (this.currentUser == null || !DriveInterface.getAllLetters(unidades).contains(letter)){
+        if (this.currentUser == null || !DriveInterface_21286604_CassoneGonzalez.getAllLetters(unidades).contains(letter)){
             return;
         }
         // Monta la unidad que se requiere
-        DriveInterface unidadRequerida = DriveInterface.getDriveInListDrive(unidades, letter);
+        DriveInterface_21286604_CassoneGonzalez unidadRequerida = DriveInterface_21286604_CassoneGonzalez.getDriveInListDrive(unidades, letter);
         this.currentDrive = unidadRequerida.getLetter();
         directories = unidadRequerida.getDirectories();
         this.pathActual = "/";
@@ -86,9 +97,9 @@ public class Filesystem implements FilesystemInterface {
         if (currentDrive == null || currentUser == null){
             return;
         }
-        FolderInterface nuevaCarpeta = new Folder(folderName, currentUser, pathActual);
+        FolderInterface_21286604_CassoneGonzalez nuevaCarpeta = new Folder_21286604_CassoneGonzalez(folderName, currentUser, pathActual);
         // Inserta la carpeta en la unidad
-        DriveInterface driveActual = DriveInterface.getDriveInListDrive(unidades, currentDrive);
+        DriveInterface_21286604_CassoneGonzalez driveActual = DriveInterface_21286604_CassoneGonzalez.getDriveInListDrive(unidades, currentDrive);
         driveActual.setFolderInDrive(nuevaCarpeta);
         switchDrive(currentDrive);
     }
@@ -103,12 +114,12 @@ public class Filesystem implements FilesystemInterface {
         if (currentDrive == null || currentUser == null){
             return;
         }
-        if (FolderInterface.getDuplicityFolders(directories, folderName, pathActual)){
+        if (FolderInterface_21286604_CassoneGonzalez.getDuplicityFolders(directories, folderName, pathActual)){
             return;
         }
-        FolderInterface nuevaCarpeta = new Folder(folderName, currentUser, securityAtributes, pathActual);
+        FolderInterface_21286604_CassoneGonzalez nuevaCarpeta = new Folder_21286604_CassoneGonzalez(folderName, currentUser, securityAtributes, pathActual);
         // Inserta la carpeta en la unidad
-        DriveInterface driveActual = DriveInterface.getDriveInListDrive(unidades, currentDrive);
+        DriveInterface_21286604_CassoneGonzalez driveActual = DriveInterface_21286604_CassoneGonzalez.getDriveInListDrive(unidades, currentDrive);
         driveActual.setFolderInDrive(nuevaCarpeta);
         switchDrive(currentDrive);
     }
@@ -119,19 +130,19 @@ public class Filesystem implements FilesystemInterface {
      */
     public void cd(String ruta){
         // Verifica que esta ruta existe
-        if (FolderInterface.verifyFinalSlash(ruta) && !ruta.equals("/")){
+        if (FolderInterface_21286604_CassoneGonzalez.verifyFinalSlash(ruta) && !ruta.equals("/")){
             ruta = ruta.substring(0, ruta.length() - 1);
         }
         if (ruta.contains(".") || ruta.contains("..")){
-            ruta = FolderInterface.deletePoints(pathActual, ruta);
+            ruta = FolderInterface_21286604_CassoneGonzalez.deletePoints(pathActual, ruta);
         }
         if (!ruta.contains("/") || !(ruta.charAt(0) == '/')){
             if (pathActual.equals("/"))
                 ruta = pathActual + ruta;
             else
-                ruta = FolderInterface.convertNameToPath(ruta, pathActual);
+                ruta = FolderInterface_21286604_CassoneGonzalez.convertNameToPath(ruta, pathActual);
         }
-        if (!FolderInterface.getAllPathsOfFolders(directories).contains(ruta)){
+        if (!FolderInterface_21286604_CassoneGonzalez.getAllPathsOfFolders(directories).contains(ruta)){
             return;
         }
         pathActual = ruta;
@@ -141,7 +152,7 @@ public class Filesystem implements FilesystemInterface {
      * Obtiene la carpeta actual que corresponde de donde está actualmenete el path
      * @return - Carpeta actual
      */
-    private FolderInterface getFolderInListFolderOfActuallyPath(){
+    private FolderInterface_21286604_CassoneGonzalez getFolderInListFolderOfActuallyPath(){
         // Se inicializa path para buscar la carpeta
         String path;
         String nameFolder;
@@ -157,7 +168,7 @@ public class Filesystem implements FilesystemInterface {
             if (path.endsWith("/") && !path.equals("/"))
                 path = path.substring(0, path.length() - 1);
         }
-        FolderInterface folderActual = FolderInterface.getFolderInListFolder(directories, path, nameFolder);
+        FolderInterface_21286604_CassoneGonzalez folderActual = FolderInterface_21286604_CassoneGonzalez.getFolderInListFolder(directories, path, nameFolder);
         return folderActual;
     }
 
@@ -165,12 +176,12 @@ public class Filesystem implements FilesystemInterface {
      * Añadae un archivo nuevo al path actual
      * @param nuevoArchivo - Nuevo archivo
      */
-    public void addFile(FileInterface nuevoArchivo){
+    public void addFile(FileInterface_21286604_CassoneGonzalez nuevoArchivo){
         // Verifica que haya una unidad montada o que haya un usuario logeado
         if (currentDrive == null || currentUser == null){
             return;
         }
-        FolderInterface folderActual = this.getFolderInListFolderOfActuallyPath();
+        FolderInterface_21286604_CassoneGonzalez folderActual = this.getFolderInListFolderOfActuallyPath();
         // Inserta el archivo en la carpeta actual
         // Se reemplaza si ya existe en la carpeta un archivo con el mismo nombre
         if (folderActual.checkDuplicateFilesInAFile(nuevoArchivo.getNombre(), nuevoArchivo.getTipo())){
@@ -188,16 +199,16 @@ public class Filesystem implements FilesystemInterface {
         if (currentDrive == null || currentUser == null){
             return;
         }
-        FolderInterface carpetaActual = this.getFolderInListFolderOfActuallyPath();
+        FolderInterface_21286604_CassoneGonzalez carpetaActual = this.getFolderInListFolderOfActuallyPath();
         if (fileNamePattern.equals("*.*")){
             carpetaActual.deleteAllFilesInFolder();
         }
         else if (fileNamePattern.contains("*")){
             List<String> nombres = carpetaActual.getAllNamesFiles();
             if (fileNamePattern.indexOf("*") > 0)
-                nombres = FolderInterface.getAllNamesStartWithAsterik(nombres,fileNamePattern);
+                nombres = FolderInterface_21286604_CassoneGonzalez.getAllNamesStartWithAsterik(nombres,fileNamePattern);
             if (fileNamePattern.indexOf("*") < fileNamePattern.length() - 1)
-                nombres = FolderInterface.getAllNamesEndWithAsterik(nombres,fileNamePattern);
+                nombres = FolderInterface_21286604_CassoneGonzalez.getAllNamesEndWithAsterik(nombres,fileNamePattern);
             carpetaActual.deleteFilesinListFile(nombres);
         }
         else if (fileNamePattern.contains(".")){
@@ -207,7 +218,7 @@ public class Filesystem implements FilesystemInterface {
                 carpetaActual.deleteFileInFolder(nombre, tipo);
         }
         else {
-            directories.remove(FolderInterface.getFolderInListFolder(directories, pathActual, fileNamePattern));
+            directories.remove(FolderInterface_21286604_CassoneGonzalez.getFolderInListFolder(directories, pathActual, fileNamePattern));
         }
     }
 
@@ -216,17 +227,17 @@ public class Filesystem implements FilesystemInterface {
         if (currentDrive == null || currentUser == null){
             return;
         }
-        FolderInterface carpetaActual = this.getFolderInListFolderOfActuallyPath();
-        List<FileInterface> archivosACopiar = null;
-        FolderInterface carpetaACopiar = null;
+        FolderInterface_21286604_CassoneGonzalez carpetaActual = this.getFolderInListFolderOfActuallyPath();
+        List<FileInterface_21286604_CassoneGonzalez> archivosACopiar = null;
+        FolderInterface_21286604_CassoneGonzalez carpetaACopiar = null;
         if (source.equals("*.*")){
             archivosACopiar = carpetaActual.getArchivos();
         } else if (source.contains("*")){
             List<String> nombres = carpetaActual.getAllNamesFiles();
             if (source.indexOf("*") > 0)
-                nombres = FolderInterface.getAllNamesStartWithAsterik(nombres,source);
+                nombres = FolderInterface_21286604_CassoneGonzalez.getAllNamesStartWithAsterik(nombres,source);
             if (source.indexOf("*") < source.length() - 1)
-                nombres = FolderInterface.getAllNamesEndWithAsterik(nombres,source);
+                nombres = FolderInterface_21286604_CassoneGonzalez.getAllNamesEndWithAsterik(nombres,source);
             archivosACopiar = carpetaActual.getFilesInListFiles(nombres);
         } else if (source.contains(".")){
             List<String> nombres = new ArrayList<>();
@@ -236,14 +247,14 @@ public class Filesystem implements FilesystemInterface {
             if (carpetaActual.checkDuplicateFilesInAFile(nombre, tipo))
                 archivosACopiar = carpetaActual.getFilesInListFiles(nombres);
         } else {
-            carpetaACopiar = FolderInterface.getFolderInListFolder(directories, pathActual, source);
+            carpetaACopiar = FolderInterface_21286604_CassoneGonzalez.getFolderInListFolder(directories, pathActual, source);
         }
         String path = targetPath.substring(targetPath.indexOf(":") + 1, targetPath.length());
         String driveDestiny = targetPath.substring(0, targetPath.indexOf(":"));
         this.switchDrive(driveDestiny);
         this.cd(path);
         if (archivosACopiar != null){
-            for(FileInterface archivo: archivosACopiar){
+            for(FileInterface_21286604_CassoneGonzalez archivo: archivosACopiar){
                 addFile(archivo);
             }
         } else if (carpetaACopiar != null) {
@@ -251,8 +262,8 @@ public class Filesystem implements FilesystemInterface {
             this.switchDrive(driveDestiny);
             this.cd(path);
             cd(carpetaACopiar.getName());
-            List<FileInterface> archivos = carpetaACopiar.getArchivos();
-            for(FileInterface archivo: archivos){
+            List<FileInterface_21286604_CassoneGonzalez> archivos = carpetaACopiar.getArchivos();
+            for(FileInterface_21286604_CassoneGonzalez archivo: archivos){
                 addFile(archivo);
             }
         }
@@ -275,7 +286,7 @@ public class Filesystem implements FilesystemInterface {
         return "Filesystem{" +
                 "name='" + name + '\'' +
                 ", users=" + users +
-                ", Drive=" + unidades +
+                ", Drives" + unidades +
                 ", currentUser='" + currentUser + '\'' +
                 ", currentDrive='" + currentDrive + '\'' +
                 ", pathActual='" + pathActual + '\'' +
@@ -285,7 +296,7 @@ public class Filesystem implements FilesystemInterface {
                 '}';
     }
 
-    public List<FolderInterface> getDirectories() {
+    public List<FolderInterface_21286604_CassoneGonzalez> getDirectories() {
         return directories;
     }
 }

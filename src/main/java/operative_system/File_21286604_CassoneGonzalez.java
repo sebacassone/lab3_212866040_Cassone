@@ -3,7 +3,7 @@ package operative_system;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class File implements FileInterface {
+public abstract class File_21286604_CassoneGonzalez implements FileInterface_21286604_CassoneGonzalez {
     private String nombre;
     private String tipo;
     private String contenido;
@@ -15,7 +15,7 @@ public abstract class File implements FileInterface {
      * @param tipo - Tipo de archivo
      * @param contenido - Contenido del archivo
      */
-    public File(String nombre, String tipo, String contenido) {
+    public File_21286604_CassoneGonzalez(String nombre, String tipo, String contenido) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.contenido = contenido;
@@ -29,7 +29,7 @@ public abstract class File implements FileInterface {
      * @param contenido - Contenido del archivo
      * @param atributosSeguridad - Atributos de seguridad
      */
-    public File(String nombre, String tipo, String contenido, List<String> atributosSeguridad) {
+    public File_21286604_CassoneGonzalez(String nombre, String tipo, String contenido, List<String> atributosSeguridad) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.contenido = contenido;
@@ -37,8 +37,8 @@ public abstract class File implements FileInterface {
     }
 
     /**
-     * ToString de File
-     * @return - String con los atributos de File
+     * ToString de File_21286604_CassoneGonzalez
+     * @return - String con los atributos de File_21286604_CassoneGonzalez
      */
     @Override
     public String toString() {

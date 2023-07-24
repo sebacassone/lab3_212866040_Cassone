@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Main {
+public class Main_21286604_CassoneGonzalez {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         boolean salir = false;
-        Filesystem s1 = null;
+        FilesystemInterface_21286604_CassoneGonzalez s1 = null;
 
         while (!salir) {
             System.out.println("### Manipulador de Sistema de Archivos ###");
@@ -26,7 +26,7 @@ public class Main {
                     System.out.println("Opción 1 seleccionada: Crear un Sistema de Archivos");
                     System.out.println("Ingrese el nombre del sistema:");
                     String systemName = scanner.nextLine();
-                    s1 = new Filesystem(systemName);
+                    s1 = new Filesystem_21286604_CassoneGonzalez(systemName);
                     System.out.println(s1);
                     break;
                 case 2:
@@ -58,14 +58,14 @@ public class Main {
                         switch (opcion2) {
                             case 1:
                                 System.out.println("Opción addDrive seleccionada");
-                                System.out.println("Ingrese el nombre de la unidad de disco:");
-                                String driveName = scanner.nextLine();
-                                System.out.println("Ingrese el nombre del usuario:");
-                                String userName = scanner.nextLine();
+                                System.out.println("Ingrese la letra del disco:");
+                                String letterDrive = scanner.nextLine();
+                                System.out.println("Ingrese el nombre del Drive:");
+                                String nameDrive = scanner.nextLine();
                                 System.out.println("Ingrese el espacio disponible:");
                                 int availableSpace = scanner.nextInt();
                                 scanner.nextLine(); // Consumir el salto de línea
-                                s1.addDrive(driveName, userName, availableSpace);
+                                s1.addDrive(letterDrive, nameDrive, availableSpace);
                                 break;
                             case 2:
                                 System.out.println("Opción register seleccionada");
@@ -85,7 +85,7 @@ public class Main {
                                 break;
                             case 5:
                                 System.out.println("Opción switchDrive seleccionada");
-                                System.out.println("Ingrese el nombre de la unidad de disco:");
+                                System.out.println("Ingrese la letra del Disco:");
                                 String switchDriveName = scanner.nextLine();
                                 s1.switchDrive(switchDriveName);
                                 break;
@@ -93,7 +93,19 @@ public class Main {
                                 System.out.println("Opción mkdir seleccionada");
                                 System.out.println("Ingrese el nombre del directorio a crear:");
                                 String directoryName = scanner.nextLine();
-                                s1.mkdir(directoryName);
+                                System.out.println("¿Quiere atributos de seguridad? T o F");
+                                String isAtributes = scanner.nextLine();
+                                if (isAtributes.equals("T")){
+                                    System.out.println("Ingrese los atributos de seguridad (h, r, w) separado por comas y sin espacios");
+                                    String[] atributes = scanner.nextLine().split(",");
+                                    List<String> atributosParaMkdir = new ArrayList<>();
+                                    for (String atributo: atributes){
+                                        atributosParaMkdir.add(atributo);
+                                    }
+                                    s1.mkdir(directoryName, atributosParaMkdir);
+                                } else {
+                                    s1.mkdir(directoryName);
+                                }
                                 break;
                             case 7:
                                 System.out.println("Opción cd seleccionada");
@@ -109,7 +121,7 @@ public class Main {
                                 String extension = scanner.nextLine();
                                 System.out.println("Ingrese el contenido del archivo:");
                                 String content = scanner.nextLine();
-                                FileInterface newFile = new FileDocument(fileName, extension, content);
+                                FileInterface_21286604_CassoneGonzalez newFile = new FileDocument_21286604CassoneGonzalez(fileName, extension, content);
                                 s1.addFile(newFile);
                                 break;
                             case 9:
@@ -145,6 +157,10 @@ public class Main {
                     }
                     break;
                 case 3:
+                    if (s1 == null){
+                        System.out.println("Cree un sistema primero");
+                        break;
+                    }
                     System.out.println("Opción 3 seleccionada: Visualizar Sistema de Archivos");
                     System.out.println(s1.getDirectories());
                     break;
@@ -157,50 +173,5 @@ public class Main {
                     break;
             }
         }
-        System.out.println(s1);
-        s1.addDrive("A", "Pepino", 1000);
-        s1.addDrive("A", "Pepin2o", 1000);
-        s1.register("Pedro");
-        s1.register("Pedro");
-        s1.register("Seba");
-        s1.login("Seba");
-        s1.login("Pedro");
-        s1.logout();
-        s1.login("Pedro");
-        s1.logout();
-        s1.login("Mariana");
-        s1.login("Seba");
-        s1.addDrive("B", "Pedro Pascal", 60000);
-        s1.switchDrive("B");
-        s1.switchDrive("A");
-        s1.mkdir("Juanito");
-        List<String> Atributes = new ArrayList<>();
-        Atributes.add("h");
-        s1.mkdir("Pepino1", Atributes);
-        s1.cd("../../../../Pepino1");
-        FileInterface nuevoArchivo = new FileDocument("Pep1", ".docx","Peo");
-        FileInterface nuevoArchivo2 = new FileDocument("Pep1", ".docx","Pichi");
-        FileInterface nuevoArchivo3 = new FileDocument("Pep2", ".py","Pichi");
-        FileInterface nuevoArchivo4 = new FileDocument("Pep3", ".jar","Pichi");
-        FileInterface nuevoArchivo5 = new FileDocument("8", ".docx","Pichi");
-        FileInterface nuevoArchivo6 = new FileDocument("Pep1", ".java","Pichi");
-        System.out.println(nuevoArchivo);
-        s1.addFile(nuevoArchivo);
-        s1.addFile(nuevoArchivo2);
-        s1.addFile(nuevoArchivo3);
-        s1.addFile(nuevoArchivo4);
-        s1.addFile(nuevoArchivo5);
-        s1.addFile(nuevoArchivo6);
-        s1.cd("/");
-        s1.addFile(nuevoArchivo);
-        s1.addFile(nuevoArchivo2);
-        s1.cd("/");
-        s1.copy("Pepino1", "B:/");
-        s1.cd("/");
-        s1.move("Pepino1", "A:/Pepino1");
-        s1.switchDrive("A");
-
-
-        System.out.println(s1);
     }
 }

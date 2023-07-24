@@ -3,16 +3,16 @@ package operative_system;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface FolderInterface {
+public interface FolderInterface_21286604_CassoneGonzalez {
     String getName();
     String getPathFolder();
-    List<FileInterface> getArchivos();
+    List<FileInterface_21286604_CassoneGonzalez> getArchivos();
     Boolean checkDuplicateFilesInAFile(String Name, String Type);
     void deleteFileInFolder(String Name, String Type);
     void deleteAllFilesInFolder();
     List<String> getAllNamesFiles();
     void deleteFilesinListFile(List<String> nombres);
-    List<FileInterface> getFilesInListFiles(List<String> nombres);
+    List<FileInterface_21286604_CassoneGonzalez> getFilesInListFiles(List<String> nombres);
     void setName(String name);
 
     // Métodos estáticos pertenecientes a la interfaz que se utilizan para cd
@@ -22,10 +22,10 @@ public interface FolderInterface {
      * @param Folders - Lista de carpetas
      * @return - Lista de Paths
      */
-    static List<String> getAllPathsOfFolders(List<FolderInterface> Folders){
+    static List<String> getAllPathsOfFolders(List<FolderInterface_21286604_CassoneGonzalez> Folders){
         List<String> Paths = new ArrayList<>();
         Paths.add("/");
-        for(FolderInterface carpeta: Folders){
+        for(FolderInterface_21286604_CassoneGonzalez carpeta: Folders){
             if(carpeta.getPathFolder().equals("/")){
                 Paths.add(carpeta.getPathFolder() + carpeta.getName());
             } else {
@@ -101,9 +101,9 @@ public interface FolderInterface {
      * @param nameFolder - Nombre de la carpeta
      * @return - Archivo que se busca
      */
-    static FolderInterface getFolderInListFolder(List<FolderInterface> carpetas, String path, String nameFolder){
-        FolderInterface carpetaEncontrada = null;
-        for (FolderInterface carpeta: carpetas){
+    static FolderInterface_21286604_CassoneGonzalez getFolderInListFolder(List<FolderInterface_21286604_CassoneGonzalez> carpetas, String path, String nameFolder){
+        FolderInterface_21286604_CassoneGonzalez carpetaEncontrada = null;
+        for (FolderInterface_21286604_CassoneGonzalez carpeta: carpetas){
             if (carpeta.getPathFolder().equals(path) && carpeta.getName().equals(nameFolder)){
                 carpetaEncontrada = carpeta;
             }
@@ -138,10 +138,10 @@ public interface FolderInterface {
         return resultados;
     }
 
-    static Boolean getDuplicityFolders(List<FolderInterface> carpetas, String folderName, String pathActual){
+    static Boolean getDuplicityFolders(List<FolderInterface_21286604_CassoneGonzalez> carpetas, String folderName, String pathActual){
         String nombre;
         Boolean isDuplicado = false;
-        for (FolderInterface carpeta: carpetas){
+        for (FolderInterface_21286604_CassoneGonzalez carpeta: carpetas){
             nombre = pathActual + carpeta.getName();
             if(nombre.equals(pathActual + folderName)){
                 isDuplicado = true;
